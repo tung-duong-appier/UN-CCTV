@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --charcoal: #1a1a1a;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --white: #ffffff;
+    --shadow: rgba(0,0,0,0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--charcoal);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 18px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(26,26,26,0.95), transparent);
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 0.18em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+  header span {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+
+  /* ─── GRID VIEW ─── */
+  #grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50vh 50vh;
+    width: 100vw;
+    height: 100vh;
+    transition: opacity 0.4s;
+  }
+
+  .grid-cell {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .grid-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s;
+    filter: brightness(0.82) saturate(0.9);
+  }
+
+  .grid-cell:hover img {
+    transform: scale(1.04);
+    filter: brightness(0.95) saturate(1.05);
+  }
+
+  .cell-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .cell-label {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .cell-number {
+    position: absolute;
+    top: 72px;
+    right: 20px;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    color: var(--gold-light);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* ─── EXPANDED VIEW ─── */
+  #expanded {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--charcoal);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  #expanded.active { display: flex; }
+
+  .expanded-inner {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  #expanded-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.88);
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 22px;
+    left: 28px;
+    z-index: 60;
+    background: rgba(26,26,26,0.82);
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 22px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .back-btn:hover {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+  }
+
+  .expanded-title {
+    position: absolute;
+    bottom: 28px;
+    left: 32px;
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+
+  .expanded-hint {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+  }
+
+  /* ─── PERSON HOTSPOTS ─── */
+  .person-spot {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .person-spot:hover .spot-ring { opacity: 1; transform: scale(1.1); }
+
+  .spot-ring {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: rgba(201,168,76,0.12);
+    opacity: 0;
+    transition: opacity 0.25s, transform 0.25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+
+  .spot-ring svg { color: var(--gold); }
+
+  .spot-label {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.25s;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+    pointer-events: none;
+  }
+  .person-spot:hover .spot-label { opacity: 1; }
+
+  /* always-visible pulse */
+  .spot-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.5);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse {
+    0%   { transform: scale(1); opacity: 0.7; }
+    70%  { transform: scale(1.7); opacity: 0; }
+    100% { transform: scale(1.7); opacity: 0; }
+  }
+
+  /* ─── EMPLOYEE CARD (POPUP) ─── */
+  #card-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+  }
+  #card-overlay.active { display: flex; }
+
+  .employee-card {
+    position: relative;
+    width: 340px;
+    background: var(--cream);
+    border-top: 4px solid var(--gold);
+    padding: 36px 32px 28px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+    animation: cardIn 0.32s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.95); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .card-close {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: rgba(26,26,26,0.45);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .card-close:hover { color: var(--charcoal); }
+
+  .card-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold-light);
+    margin-bottom: 16px;
+    display: block;
+    background: #ccc;
+  }
+
+  .card-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ddd 0%, #bbb 100%);
+    border: 3px solid var(--gold-light);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #888;
+  }
+
+  .card-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .card-role {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 18px;
+    letter-spacing: 0.04em;
+  }
+  .card-divider {
+    height: 1px;
+    background: var(--gold-light);
+    margin-bottom: 16px;
+    opacity: 0.6;
+  }
+  .card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #444;
+  }
+  .card-row-icon {
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 0.9rem;
+  }
+  .card-bio {
+    margin-top: 16px;
+    font-size: 0.78rem;
+    color: #555;
+    line-height: 1.65;
+    font-style: italic;
+    border-left: 2px solid var(--gold-light);
+    padding-left: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Our Team</h1>
+  <span>Click ảnh để xem — Click người để xem thẻ nhân viên</span>
+</header>
+
+<!-- GRID -->
+<div id="grid">
+  <!-- Cell 1 -->
+  <div class="grid-cell" onclick="openPhoto(0)">
+    <!-- ĐỔI src thành đường dẫn ảnh của bạn -->
+    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80" alt="Team Alpha">
+    <div class="cell-overlay"></div>
+    <span class="cell-number">01 / 04</span>
+    <span class="cell-label">Team Alpha</span>
+  </div>
+  <!-- Cell 2 -->
+  <div class="grid-cell" onclick="openPhoto(1)">
+    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=900&q=80" alt="Team Beta">
+    <div class="cell-overlay"></div>
+    <span class="cell-number">02 / 04</span>
+    <span class="cell-label">Team Beta</span>
+  </div>
+  <!-- Cell 3 -->
+  <div class="grid-cell" onclick="openPhoto(2)">
+    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80" alt="Team Gamma">
+    <div class="cell-overlay"></div>
+    <span class="cell-number">03 / 04</span>
+    <span class="cell-label">Team Gamma</span>
+  </div>
+  <!-- Cell 4 -->
+  <div class="grid-cell" onclick="openPhoto(3)">
+    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=900&q=80" alt="Team Delta">
+    <div class="cell-overlay"></div>
+    <span class="cell-number">04 / 04</span>
+    <span class="cell-label">Team Delta</span>
+  </div>
+</div>
+
+<!-- EXPANDED PHOTO VIEW -->
+<div id="expanded">
+  <div class="expanded-inner">
+    <button class="back-btn" onclick="closePhoto()">← Quay lại</button>
+    <img id="expanded-img" src="" alt="">
+    <div id="person-spots"></div>
+    <div class="expanded-title" id="expanded-title"></div>
+    <div class="expanded-hint">Click vào người để xem thẻ nhân viên</div>
+  </div>
+</div>
+
+<!-- EMPLOYEE CARD POPUP -->
+<div id="card-overlay" onclick="closeCard(event)">
+  <div class="employee-card" id="employee-card">
+    <button class="card-close" onclick="closeCard()">✕</button>
+    <div class="card-avatar-placeholder" id="card-avatar">👤</div>
+    <div class="card-tag" id="card-team">Team Name</div>
+    <div class="card-name" id="card-name">Nguyễn Văn A</div>
+    <div class="card-role" id="card-role">Chức vụ</div>
+    <div class="card-divider"></div>
+    <div class="card-info">
+      <div class="card-row">
+        <span class="card-row-icon">📧</span>
+        <span id="card-email">email@company.com</span>
+      </div>
+      <div class="card-row">
+        <span class="card-row-icon">📞</span>
+        <span id="card-phone">0901 234 567</span>
+      </div>
+      <div class="card-row">
+        <span class="card-row-icon">🏢</span>
+        <span id="card-dept">Phòng ban</span>
+      </div>
+    </div>
+    <div class="card-bio" id="card-bio">Mô tả ngắn về nhân viên này.</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  DỮ LIỆU — Chỉnh sửa tại đây
+// ════════════════════════════════════════════════════════════
+const photos = [
+  {
+    src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=90",
+    title: "Team Alpha",
+    // Vị trí hotspot: left%, top% trong ảnh (0-100)
+    people: [
+      { left: 12, top: 45, name: "Nguyễn Văn An", role: "Trưởng nhóm", email: "an.nv@company.com", phone: "0901 111 001", dept: "Product Development", bio: "7 năm kinh nghiệm trong lĩnh vực phát triển sản phẩm. Dẫn dắt nhiều dự án quan trọng." },
+      { left: 28, top: 50, name: "Trần Thị Bình", role: "Designer", email: "binh.tt@company.com", phone: "0901 111 002", dept: "UX/UI Design", bio: "Chuyên gia thiết kế trải nghiệm người dùng với tư duy sáng tạo độc đáo." },
+      { left: 48, top: 42, name: "Lê Minh Cường", role: "Developer", email: "cuong.lm@company.com", phone: "0901 111 003", dept: "Engineering", bio: "Full-stack developer với niềm đam mê với công nghệ mới và clean code." },
+      { left: 66, top: 48, name: "Phạm Thị Dung", role: "QA Lead", email: "dung.pt@company.com", phone: "0901 111 004", dept: "Quality Assurance", bio: "Đảm bảo chất lượng sản phẩm ở mức cao nhất qua quy trình kiểm thử nghiêm ngặt." },
+      { left: 84, top: 46, name: "Hoàng Văn Em", role: "DevOps", email: "em.hv@company.com", phone: "0901 111 005", dept: "Infrastructure", bio: "Chuyên gia hạ tầng đám mây, tối ưu hóa pipeline CI/CD cho toàn bộ hệ thống." }
+    ]
+  },
+  {
+    src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1600&q=90",
+    title: "Team Beta",
+    people: [
+      { left: 14, top: 50, name: "Vũ Thị Phương", role: "Marketing Manager", email: "phuong.vt@company.com", phone: "0902 222 001", dept: "Marketing", bio: "Chiến lược gia marketing với 5 năm kinh nghiệm tăng trưởng thương hiệu." },
+      { left: 30, top: 44, name: "Đặng Quốc Hùng", role: "Data Analyst", email: "hung.dq@company.com", phone: "0902 222 002", dept: "Analytics", bio: "Biến dữ liệu phức tạp thành insight hữu ích giúp ra quyết định kinh doanh." },
+      { left: 50, top: 48, name: "Ngô Thị Kim", role: "Content Lead", email: "kim.nt@company.com", phone: "0902 222 003", dept: "Content", bio: "Dẫn dắt đội ngũ sản xuất nội dung chất lượng cao cho đa nền tảng." },
+      { left: 68, top: 42, name: "Bùi Anh Long", role: "SEO Specialist", email: "long.ba@company.com", phone: "0902 222 004", dept: "Digital Marketing", bio: "Tối ưu hóa hiệu suất tìm kiếm và tăng trưởng organic traffic." },
+      { left: 85, top: 50, name: "Đinh Thị Mai", role: "Brand Designer", email: "mai.dt@company.com", phone: "0902 222 005", dept: "Creative", bio: "Xây dựng và duy trì bộ nhận diện thương hiệu nhất quán, ấn tượng." }
+    ]
+  },
+  {
+    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=90",
+    title: "Team Gamma",
+    people: [
+      { left: 15, top: 52, name: "Trương Văn Nam", role: "Sales Director", email: "nam.tv@company.com", phone: "0903 333 001", dept: "Sales", bio: "Lãnh đạo đội sales với kết quả vượt KPI liên tục 3 năm." },
+      { left: 32, top: 46, name: "Lý Thị Oanh", role: "Account Manager", email: "oanh.lt@company.com", phone: "0903 333 002", dept: "Client Relations", bio: "Xây dựng và duy trì mối quan hệ bền vững với khách hàng chiến lược." },
+      { left: 50, top: 50, name: "Phan Minh Phúc", role: "Business Dev", email: "phuc.pm@company.com", phone: "0903 333 003", dept: "Business Development", bio: "Khai thác cơ hội kinh doanh mới và mở rộng thị trường." },
+      { left: 67, top: 44, name: "Cao Thị Quỳnh", role: "CRM Specialist", email: "quynh.ct@company.com", phone: "0903 333 004", dept: "Customer Success", bio: "Tối ưu hóa trải nghiệm khách hàng qua hệ thống CRM tiên tiến." },
+      { left: 83, top: 52, name: "Hồ Văn Sơn", role: "Partnership Lead", email: "son.hv@company.com", phone: "0903 333 005", dept: "Partnerships", bio: "Phát triển mạng lưới đối tác chiến lược trong và ngoài nước." }
+    ]
+  },
+  {
+    src: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1600&q=90",
+    title: "Team Delta",
+    people: [
+      { left: 13, top: 48, name: "Châu Thị Tâm", role: "HR Manager", email: "tam.ct@company.com", phone: "0904 444 001", dept: "Human Resources", bio: "Kiến tạo văn hóa doanh nghiệp tích cực và thu hút nhân tài hàng đầu." },
+      { left: 29, top: 52, name: "Dương Văn Thịnh", role: "Finance Lead", email: "thinh.dv@company.com", phone: "0904 444 002", dept: "Finance", bio: "Quản lý tài chính và tối ưu chi phí vận hành doanh nghiệp." },
+      { left: 49, top: 44, name: "Kiều Thị Uyên", role: "Legal Counsel", email: "uyen.kt@company.com", phone: "0904 444 003", dept: "Legal", bio: "Đảm bảo hoạt động kinh doanh tuân thủ pháp luật và bảo vệ quyền lợi công ty." },
+      { left: 67, top: 50, name: "Mai Văn Vinh", role: "IT Manager", email: "vinh.mv@company.com", phone: "0904 444 004", dept: "Information Technology", bio: "Quản lý hạ tầng IT và bảo mật thông tin toàn công ty." },
+      { left: 84, top: 46, name: "Nguyễn Thị Xuân", role: "Admin Lead", email: "xuan.nt@company.com", phone: "0904 444 005", dept: "Administration", bio: "Điều phối hoạt động hành chính và đảm bảo văn phòng vận hành trơn tru." }
+    ]
+  }
+];
+
+// ════════════════════════════════════════════════════════════
+//  LOGIC
+// ════════════════════════════════════════════════════════════
+let currentPhoto = null;
+
+function openPhoto(index) {
+  currentPhoto = index;
+  const p = photos[index];
+  document.getElementById('expanded-img').src = p.src;
+  document.getElementById('expanded-title').textContent = p.title;
+
+  // Build hotspots
+  const container = document.getElementById('person-spots');
+  container.innerHTML = '';
+  p.people.forEach((person, i) => {
+    const spot = document.createElement('div');
+    spot.className = 'person-spot';
+    spot.style.left = person.left + '%';
+    spot.style.top  = person.top  + '%';
+    spot.style.transform = 'translate(-50%, -50%)';
+    spot.innerHTML = `
+      <div class="spot-ring">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </div>
+      <div class="spot-pulse"></div>
+      <div class="spot-label">${person.name.split(' ').pop()}</div>
+    `;
+    spot.addEventListener('click', (e) => { e.stopPropagation(); openCard(index, i); });
+    container.appendChild(spot);
+  });
+
+  document.getElementById('expanded').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePhoto() {
+  document.getElementById('expanded').classList.remove('active');
+}
+
+function openCard(photoIndex, personIndex) {
+  const p = photos[photoIndex].people[personIndex];
+  document.getElementById('card-team').textContent   = photos[photoIndex].title;
+  document.getElementById('card-name').textContent   = p.name;
+  document.getElementById('card-role').textContent   = p.role;
+  document.getElementById('card-email').textContent  = p.email;
+  document.getElementById('card-phone').textContent  = p.phone;
+  document.getElementById('card-dept').textContent   = p.dept;
+  document.getElementById('card-bio').textContent    = p.bio;
+  document.getElementById('card-avatar').textContent = '👤';
+  document.getElementById('card-overlay').classList.add('active');
+}
+
+function closeCard(e) {
+  if (!e || e.target === document.getElementById('card-overlay')) {
+    document.getElementById('card-overlay').classList.remove('active');
+  }
+}
+
+// ESC key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('card-overlay').classList.contains('active')) closeCard();
+    else if (document.getElementById('expanded').classList.contains('active')) closePhoto();
+  }
+});
+</script>
+</body>
+</html>
