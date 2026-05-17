@@ -409,30 +409,10 @@
   </div>
 </div>
 
-<!-- EMPLOYEE CARD POPUP -->
 <div id="card-overlay" onclick="closeCard(event)">
-  <div class="employee-card" id="employee-card">
-    <button class="card-close" onclick="closeCard()">✕</button>
-    <div class="card-avatar-placeholder" id="card-avatar">👤</div>
-    <div class="card-tag" id="card-team">Team Name</div>
-    <div class="card-name" id="card-name">Nguyễn Văn A</div>
-    <div class="card-role" id="card-role">Chức vụ</div>
-    <div class="card-divider"></div>
-    <div class="card-info">
-      <div class="card-row">
-        <span class="card-row-icon">📧</span>
-        <span id="card-email">email@company.com</span>
-      </div>
-      <div class="card-row">
-        <span class="card-row-icon">📞</span>
-        <span id="card-phone">0901 234 567</span>
-      </div>
-      <div class="card-row">
-        <span class="card-row-icon">🏢</span>
-        <span id="card-dept">Phòng ban</span>
-      </div>
-    </div>
-    <div class="card-bio" id="card-bio">Mô tả ngắn về nhân viên này.</div>
+  <div style="position:relative; max-width:90vw; max-height:90vh;">
+    <img id="card-img" src="" style="max-width:90vw; max-height:90vh; display:block; box-shadow: 0 24px 64px rgba(0,0,0,0.6);">
+    <button onclick="closeCard()" style="position:absolute; top:-16px; right:-16px; width:36px; height:36px; border-radius:50%; background:#1a1a1a; border:2px solid #c9a84c; color:#e8d5a3; font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
   </div>
 </div>
 
@@ -445,44 +425,44 @@ const photos = [
     src: "photos/Entrance.png",
     title: "Entrance",
     people: [
-      { left: 43.5, top: 46, name: "Nguyễn Văn An", role: "Trưởng nhóm", email: "an.nv@company.com", phone: "0901 111 001", dept: "Product Development", bio: "7 năm kinh nghiệm trong lĩnh vực phát triển sản phẩm. Dẫn dắt nhiều dự án quan trọng." },
-      { left: 51.5, top: 76.5, name: "Trần Thị Bình", role: "Designer", email: "binh.tt@company.com", phone: "0901 111 002", dept: "UX/UI Design", bio: "Chuyên gia thiết kế trải nghiệm người dùng với tư duy sáng tạo độc đáo." },
-      { left: 49, top: 42, name: "Lê Minh Cường", role: "Developer", email: "cuong.lm@company.com", phone: "0901 111 003", dept: "Engineering", bio: "Full-stack developer với niềm đam mê với công nghệ mới và clean code." },
-      { left: 59, top: 46, name: "Phạm Thị Dung", role: "QA Lead", email: "dung.pt@company.com", phone: "0901 111 004", dept: "Quality Assurance", bio: "Đảm bảo chất lượng sản phẩm ở mức cao nhất qua quy trình kiểm thử nghiêm ngặt." },
-      { left: 82, top: 63, name: "Hoàng Văn Em", role: "DevOps", email: "em.hv@company.com", phone: "0901 111 005", dept: "Infrastructure", bio: "Chuyên gia hạ tầng đám mây, tối ưu hóa pipeline CI/CD cho toàn bộ hệ thống." }
+      { left: 43.5, top: 46,   name: "David",    cardSrc: "cards/David Mwangi.png" },
+      { left: 51.5, top: 76.5, name: "Naomi",    cardSrc: "cards/Naomi Okafor.png" },
+      { left: 49,   top: 42,   name: "Maya",     cardSrc: "cards/Maya Rahman.png" },
+      { left: 59,   top: 46,   name: "Karim",    cardSrc: "cards/Karim El-Sayed.png" },
+      { left: 82,   top: 63,   name: "Adrian",   cardSrc: "cards/Adrian Santos.png" }
     ]
   },
   {
     src: "photos/Hallway.png",
     title: "Hallway",
     people: [
-      { left: 22.5, top: 50, name: "Vũ Thị Phương", role: "Marketing Manager", email: "phuong.vt@company.com", phone: "0902 222 001", dept: "Marketing", bio: "Chiến lược gia marketing với 5 năm kinh nghiệm tăng trưởng thương hiệu." },
-      { left: 42, top: 50, name: "Đặng Quốc Hùng", role: "Data Analyst", email: "hung.dq@company.com", phone: "0902 222 002", dept: "Analytics", bio: "Biến dữ liệu phức tạp thành insight hữu ích giúp ra quyết định kinh doanh." },
-      { left: 50, top: 49, name: "Ngô Thị Kim", role: "Content Lead", email: "kim.nt@company.com", phone: "0902 222 003", dept: "Content", bio: "Dẫn dắt đội ngũ sản xuất nội dung chất lượng cao cho đa nền tảng." },
-      { left: 60, top: 48, name: "Bùi Anh Long", role: "SEO Specialist", email: "long.ba@company.com", phone: "0902 222 004", dept: "Digital Marketing", bio: "Tối ưu hóa hiệu suất tìm kiếm và tăng trưởng organic traffic." },
-      { left: 81.5, top: 49, name: "Đinh Thị Mai", role: "Brand Designer", email: "mai.dt@company.com", phone: "0902 222 005", dept: "Creative", bio: "Xây dựng và duy trì bộ nhận diện thương hiệu nhất quán, ấn tượng." }
+      { left: 22.5, top: 50, name: "Lindiwe",  cardSrc: "cards/Lindiwe Maseko.png" },
+      { left: 42,   top: 50, name: "Samuel",   cardSrc: "cards/Samuel Dlamini.png" },
+      { left: 50,   top: 49, name: "Tesfaye",  cardSrc: "cards/Tesfaye Alemu.png" },
+      { left: 60,   top: 48, name: "Daniel",   cardSrc: "cards/Daniel Bekele.png" },
+      { left: 81.5, top: 49, name: "Idriss",   cardSrc: "cards/Idriss Nkurunziza.png" }
     ]
   },
   {
     src: "photos/Lobby.png",
     title: "Lobby",
     people: [
-      { left: 28, top: 71, name: "Trương Văn Nam", role: "Sales Director", email: "nam.tv@company.com", phone: "0903 333 001", dept: "Sales", bio: "Lãnh đạo đội sales với kết quả vượt KPI liên tục 3 năm." },
-      { left: 35.5, top: 74, name: "Lý Thị Oanh", role: "Account Manager", email: "oanh.lt@company.com", phone: "0903 333 002", dept: "Client Relations", bio: "Xây dựng và duy trì mối quan hệ bền vững với khách hàng chiến lược." },
-      { left: 55, top: 74, name: "Phan Minh Phúc", role: "Business Dev", email: "phuc.pm@company.com", phone: "0903 333 003", dept: "Business Development", bio: "Khai thác cơ hội kinh doanh mới và mở rộng thị trường." },
-      { left: 67.5, top: 72.5, name: "Cao Thị Quỳnh", role: "CRM Specialist", email: "quynh.ct@company.com", phone: "0903 333 004", dept: "Customer Success", bio: "Tối ưu hóa trải nghiệm khách hàng qua hệ thống CRM tiên tiến." },
-      { left: 65, top: 57, name: "Hồ Văn Sơn", role: "Partnership Lead", email: "son.hv@company.com", phone: "0903 333 005", dept: "Partnerships", bio: "Phát triển mạng lưới đối tác chiến lược trong và ngoài nước." }
+      { left: 28,   top: 71,   name: "Amina",   cardSrc: "cards/Amina Diop.png" },
+      { left: 35.5, top: 74,   name: "Chipo",   cardSrc: "cards/Chipo Ndlovu.png" },
+      { left: 55,   top: 74,   name: "Jean",    cardSrc: "cards/Jean-Paul Habimana.png" },
+      { left: 67.5, top: 72.5, name: "Malik",   cardSrc: "cards/Malik Kamara.png" },
+      { left: 65,   top: 57,   name: "Keikou",  cardSrc: "cards/Marina Sato.png" }
     ]
   },
   {
     src: "photos/Office.png",
     title: "Office",
     people: [
-      { left: 18.5, top: 42, name: "Châu Thị Tâm", role: "HR Manager", email: "tam.ct@company.com", phone: "0904 444 001", dept: "Human Resources", bio: "Kiến tạo văn hóa doanh nghiệp tích cực và thu hút nhân tài hàng đầu." },
-      { left: 31.5, top: 55.5, name: "Dương Văn Thịnh", role: "Finance Lead", email: "thinh.dv@company.com", phone: "0904 444 002", dept: "Finance", bio: "Quản lý tài chính và tối ưu chi phí vận hành doanh nghiệp." },
-      { left: 35.5, top: 39, name: "Kiều Thị Uyên", role: "Legal Counsel", email: "uyen.kt@company.com", phone: "0904 444 003", dept: "Legal", bio: "Đảm bảo hoạt động kinh doanh tuân thủ pháp luật và bảo vệ quyền lợi công ty." },
-      { left: 41, top: 41, name: "Mai Văn Vinh", role: "IT Manager", email: "vinh.mv@company.com", phone: "0904 444 004", dept: "Information Technology", bio: "Quản lý hạ tầng IT và bảo mật thông tin toàn công ty." },
-      { left: 49.5, top: 41, name: "Nguyễn Thị Xuân", role: "Admin Lead", email: "xuan.nt@company.com", phone: "0904 444 005", dept: "Administration", bio: "Điều phối hoạt động hành chính và đảm bảo văn phòng vận hành trơn tru." }
+      { left: 18.5, top: 42,   name: "Rohan",    cardSrc: "cards/Rohan Perera.png" },
+      { left: 31.5, top: 55.5, name: "Thierry",  cardSrc: "cards/Thierry Mukendi.png" },
+      { left: 35.5, top: 39,   name: "Abdul",    cardSrc: "cards/Abdullahi Noor.png" },
+      { left: 41,   top: 41,   name: "Youssouf", cardSrc: "cards/Youssouf Aden.png" },
+      { left: 49.5, top: 41,   name: "Fatou",    cardSrc: "cards/Fatou Bensouda.png" }
     ]
   }
 ];
@@ -530,14 +510,7 @@ function closePhoto() {
 
 function openCard(photoIndex, personIndex) {
   const p = photos[photoIndex].people[personIndex];
-  document.getElementById('card-team').textContent   = photos[photoIndex].title;
-  document.getElementById('card-name').textContent   = p.name;
-  document.getElementById('card-role').textContent   = p.role;
-  document.getElementById('card-email').textContent  = p.email;
-  document.getElementById('card-phone').textContent  = p.phone;
-  document.getElementById('card-dept').textContent   = p.dept;
-  document.getElementById('card-bio').textContent    = p.bio;
-  document.getElementById('card-avatar').textContent = '👤';
+  document.getElementById('card-img').src = p.cardSrc;
   document.getElementById('card-overlay').classList.add('active');
 }
 
