@@ -396,15 +396,15 @@
   /* ─── EMPLOYEE CARD FLIP ─── */
   .card-scene {
     position: relative;
-    width: min(90vw, 380px);
-    max-height: 90vh;
+    aspect-ratio: 1020 / 1077;
+    height: min(90vh, 88vw * 1077 / 1020);
+    max-width: 94vw;
     perspective: 1600px;
   }
   .card-flip {
     position: relative;
     width: 100%;
-    aspect-ratio: 1020 / 1077;
-    max-height: 90vh;
+    height: 100%;
     transform-style: preserve-3d;
     transform: rotateY(180deg);
     transition: transform 0.85s cubic-bezier(0.34, 1.15, 0.5, 1);
@@ -444,19 +444,30 @@
     width: 84px; height: 84px;
     opacity: 0.92;
   }
+  .card-back-titlewrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+  }
   .card-back-title {
     font-family: 'Cormorant Garamond', serif;
     letter-spacing: 0.32em;
-    font-size: 1.1rem;
+    font-size: 1.35rem;
     text-transform: uppercase;
     opacity: 0.95;
+    line-height: 1;
+    /* nudge for centered look despite letter-spacing on the last char */
+    text-indent: 0.32em;
   }
   .card-back-sub {
-    font-size: 0.62rem;
+    font-size: 0.64rem;
     letter-spacing: 0.42em;
     text-transform: uppercase;
     color: rgba(232,238,246,0.6);
-    margin-top: -14px;
+    line-height: 1;
+    text-indent: 0.42em;
   }
   .card-back-loader {
     display: flex;
@@ -559,7 +570,7 @@
           <line x1="2" y1="12" x2="22" y2="12"/>
           <path d="M3.5 7 H20.5 M3.5 17 H20.5"/>
         </svg>
-        <div>
+        <div class="card-back-titlewrap">
           <div class="card-back-title">United Nations</div>
           <div class="card-back-sub">Staff Identity</div>
         </div>
